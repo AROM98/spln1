@@ -1,11 +1,13 @@
 #! python3
 
-import getopt
+from getopt import getopt
 import re
 import sys
 import types
 import json
 from pprint import pprint
+
+from soupsieve import match
 
  ######### GRUPO 4 ############
 
@@ -83,7 +85,7 @@ def getTraducao(palavra, flagTraducao):
 
             print(listPrint)
     except Exception as e:
-        print("Palavra não existe")
+        print("Palavra não existe:", e)
 
 
 #verbose: devolve informação detalhada
@@ -130,6 +132,7 @@ def getFromPrefixo(palavra):
     print('Matchs:')
     count = 1
     for i in results:
+        print("###############")
         print(count)
         print(dicTraducoes[i])
         print('Dominio da Palavra:')
@@ -139,7 +142,57 @@ def getFromPrefixo(palavra):
 
     #print(results)
 
-getTraducao(sys.argv[1],'es')
+
+
+ops,args = getopt(sys.argv[1:],"l:vdp:h", ["lang", "verbose", "dominio", "prefixo", "help"])
+ops = dict(ops)
+
+
+if '-l' in ops:
+    if(ops['-l']=='pt'):
+        getTraducao(sys.argv[3],'pt')
+    elif(ops['-l']=='es'):
+        getTraducao(sys.argv[3],'es')
+    elif(ops['-l']=='en'):
+        getTraducao(sys.argv[3],'en')
+    elif(ops['-l']=='gl'):
+        getTraducao(sys.argv[3],'gl')
+    else: 
+        getTraducao(sys.argv[2],'')
+elif '-v' in ops:
+    print('função verbose')
+    getInfoDetalhada(sys.argv[2])
+elif '-d' in ops:
+    print('função dominio')
+    getDominio(sys.argv[2])
+elif '-p' in ops:
+    print('funcao prefixo')
+    getFromPrefixo(sys.argv[2])
+elif '-h' in ops:
+    print('''
+        HELP MENU
+        
+        Opções disponiveis:
+
+        -l Palavra : Caso não for indicado lingua, imprime todas.
+
+        -l [pt, es, en, gl] Palavra : A palavra é traduzida para a lingua indicada pela flag.
+                                      pt = Portugues, es = Espanhol, en = ingles, gl = galego.
+
+        -v Palavra : Modo verbose, devolve informação detalhada sobre a palavra.
+
+        -d Palavra : Devolve o dominio no qual a palavra se insere.
+
+        -p Prefixo : Devolve informação de uma ou mais palavras com o prefixo indicado.
+
+        -h : Menu de Ajuda.
+        
+        SPLN@2022
+        ''')
+else:
+    print('erro: opção escolhida não existe')
+
+#getTraducao(sys.argv[1],'es')
 #getInfoDetalhada(sys.argv[1])
 #getDominio(sys.argv[1])
 #getFromPrefixo(sys.argv[1])
