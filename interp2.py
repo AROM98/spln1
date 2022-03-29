@@ -78,8 +78,8 @@ def getTraducao(palavra, flagTraducao):
         else:
             tradu=  traducoes[flagTraducao]#obtém a tradução desejada, passada pela flag
             listPrint = 'Tradução de ' + palavra + ' para ' + flagTraducao +':'
-            for i in range(len(tradu[1])):
-                listPrint += '\n--'+ str(tradu[1][i]) +'\n'
+            for i in range(len(tradu)):
+                listPrint += '\n--'+ str(tradu[i]) +'\n'
 
             print(listPrint)
     except Exception as e:
